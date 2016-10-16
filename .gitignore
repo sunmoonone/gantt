@@ -1,0 +1,16 @@
+*.py[cod]
+*~
+*.swp
+*.log
+.ropeproject/
+.settings/
+.settings/*
+.tox/
+.metadata
+*.DS_Store
+bin/
+tmp/
+build/
+dist/
+logs/
+

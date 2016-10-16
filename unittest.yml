@@ -1,0 +1,4 @@
+# unittest config
+
+# startup module
+startup: settings.py

@@ -1,0 +1,88 @@
+#============================
+# package dependency
+
+# include_path: ["../web-common"]
+
+profile:
+    enabled: true 
+
+# unittest settings
+test:
+    domain: example.me 
+    app: bq14q0p64
+    app_secret: d1639a6b1242e43d6cff8d7e5f1c0a92
+
+# configure web framework
+# framework: web.py | flast (default: web.py)
+http:
+    framework: web.py
+    auth_login_id: "uid"
+    auth_login_path: "/user?action=login"
+    template_engine: Jinjia2
+    url_schema: https
+    template_path: "templates/"
+
+# config for web framework
+web:
+    session_secret_key: 'def678a3-3fba-4666-b711-8ai32a2'
+    session_timeout: 86400
+    session_cookie_name: gantt_session_id
+    static_dir: "static/"
+
+saml:
+    idp_sso_url: "https://devel.example.me/login/sso"
+
+#============================
+# domain and resource group mappings
+
+resource: 
+    gantt: 
+        redis: &REDIS ["172.16.0.11:6379"]
+        db:
+            master: [127.0.0.1, 3306, root, 123456]
+            slave: [127.0.0.1, 3306, root, 123456]
+
+#============================
+# logging config 
+#
+# required keys: 
+#   logfile
+#   formatters.common.format
+#
+# root logger should have at least one handler
+
+logging:
+    default_name: gantt
+    version: 1
+    logfile: logs/logging.log
+    formatters:
+        common:
+            format: '%(asctime)s %(levelname)s %(name)s L%(lineno)d %(message)s'
+
+    handlers:
+        console:
+            class: logging.StreamHandler
+            level: DEBUG
+            formatter: common
+            stream: ext://sys.stdout
+
+        rotatefile:
+            class: logging.handlers.RotatingFileHandler
+            formatter: common
+            filename: cfg://logfile
+            maxBytes: 20971520
+            backupCount: 5
+      
+    loggers:
+        api:
+            level: DEBUG
+        models:
+            level: DEBUG
+        UserController:
+            level: DEBUG
+
+    root:
+            level: INFO
+            handlers: [rotatefile]
+
+    
